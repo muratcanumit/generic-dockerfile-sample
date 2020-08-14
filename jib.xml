@@ -17,3 +17,25 @@
     </executions>
 </plugin>
 
+<!-- JUST ANOTHER CONF OPTIONS FOR JIB --> 
+<configuration>
+    <from>
+        <image>openjdk:alpine</image>
+    </from>
+    <to>
+        <image>name/${project.name}</image>
+        <tags>
+            <tag>${project.version}</tag>
+            <tag>latest</tag>
+        </tags>
+    </to>
+    <container>
+        <jvmFlags>
+            <jvmFlag>-Xms512m</jvmFlag>
+        </jvmFlags>
+        <mainClass>com.your.projects.package.name.MainClassName</mainClass>
+        <ports>
+            <port>8100</port>
+        </ports>
+    </container>
+</configuration>
