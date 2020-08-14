@@ -1,0 +1,68 @@
+<!--https://dmp.fabric8.io/
+
+Add the plugin shown below and configure property for jar file.
+
+-Dockerfile
+-Defining Dockerfile contents in POM XML. -->
+
+<!--Using Dockerfile-->
+<!-- To build the image - "mvn clean package" 
+<!-- docker run -p 8080:8080 name/appname -->
+<plugin>
+    <groupId>io.fabric8</groupId>
+    <artifactId>docker-maven-plugin</artifactId>
+    <version>0.26.0</version>
+    <executions>
+        <execution>
+            <id>docker-build</id>
+            <phase>package</phase>
+            <goals>
+                <goal>build</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+<properties>
+...
+ <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
+</properties>
+
+<!--Using XML Configuration -->
+<!-- To build the image - "mvn clean package" -->
+<!-- docker run -p 8080:8080 name:latest -->
+<plugin>
+   <groupId>io.fabric8</groupId>
+   <artifactId>docker-maven-plugin</artifactId>
+   <version>0.26.0</version>
+   <extensions>true</extensions>
+   <configuration>
+      <verbose>true</verbose>
+      <images>
+         <image>
+            <name>${project.artifactId}</name>
+            <build>
+               <from>java:8-jdk-alpine</from>
+               <entryPoint>
+                  <exec>
+                     <args>java</args>
+                     <args>-jar</args>
+                     <args>/maven/${project.build.finalName}.jar</args>
+                  </exec>
+               </entryPoint>
+               <assembly>
+                  <descriptorRef>artifact</descriptorRef>
+               </assembly>
+            </build>
+         </image>
+      </images>
+   </configuration>
+   <executions>
+    <execution>
+        <id>docker-build</id>
+        <phase>package</phase>
+        <goals>
+            <goal>build</goal>
+        </goals>
+    </execution>
+   </executions>
+</plugin>
